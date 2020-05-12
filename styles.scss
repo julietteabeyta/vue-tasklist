@@ -1,0 +1,25 @@
+li {
+  list-style: none;
+  animation: slide-in .2s ease; 
+  
+  &.deleted {
+    animation: fade-out .2s ease;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
