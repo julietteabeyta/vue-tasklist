@@ -11,13 +11,13 @@
     <h1>Tasks</h1>
       <li class="list-group-item" v-for="(task,index) in tasks" v-show="!task.completed" :ref="'taskListItem'+index">
         <input type="checkbox" :id="'incompleted-task-id-' + index " v-model="task.completed">
-        <input type="text" class="form-control" @keyup="(e) => editTask(e, index)" :value="task.description">
+        <input type="text" class="form-control" v-on:blur="(e) => validateEdit(e, index)" @keyup="(e) => editTask(e, index)" :value="task.description" >
         <div>
             <button v-on:click="removeTask(index)">delete</i></button>
         </div>
       </li>
     <div>
-      <input type="text" class="form-control" ref="newTaskInput" placeholder="Exit and hit enter" @keyup.enter="addTask">
+      <input type="text" class="form-control" ref="newTaskInput" placeholder="Add task" @keyup.enter="addTask">
     </div>
     <h1>Completed Tasks</h1>
       <li class="list-group-item" v-for="(task,index) in tasks" v-show="!!task.completed" :ref="'taskListItem'+index">
@@ -49,12 +49,15 @@
       },
       methods: {
         addTask(e) {
-          this.tasks.push({ description: e.target.value, completed: false });
-          this.$refs.newTaskInput.value = '';
+          const isValid = this.validateEdit(e);
+          if (isValid) {
+            this.tasks.push({ description: e.target.value, completed: false });
+            this.$refs.newTaskInput.value = '';
+          }
         },
-        editTask(e) {
-          // make the text editable for the user--
-          // maybe keep editable? on input fire this?
+        editTask(e, index) {
+          const isValid = this.validateEdit(e);
+          if (isValid) this.tasks[index].description = e.target.value;
         },
         removeTask(index) {
           this.$refs[`taskListItem${index}`][0].classList.add('deleted');
@@ -62,9 +65,14 @@
             this.tasks.splice(index, 1);
           }, 200);
         },
-        // markCompleted(index) {
-        //     this.tasks[index].completed = true;
-        // }
+        validateEdit(e, index) {
+          console.log('what is the event ', e);
+          if (e.target.value.trim() === '') {
+            if (e.type === 'blur') this.removeTask(index);
+            return false;
+          }
+          return true;
+        }
       }
     });
   </script>
