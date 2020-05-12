@@ -1,0 +1,25 @@
+{
+  "name": "vue-tasklist",
+  "version": "1.0.0",
+  "description": "Vue Task List",
+  "main": "index.html",
+  "dependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
+    "webpack": "^4.43.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julietteabeyta/vue-tasklist.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julietteabeyta/vue-tasklist/issues"
+  },
+  "homepage": "https://github.com/julietteabeyta/vue-tasklist#readme"
+}
