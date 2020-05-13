@@ -4,77 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vue Task List</title>
-  <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
+<link rel="stylesheet" href="styles.scss">
 <body>
-  <div id="app">
-    <h1>Tasks</h1>
-      <li class="list-group-item" v-for="(task,index) in tasks" v-show="!task.completed" :ref="'taskListItem'+index">
-        <input type="checkbox" :id="'incompleted-task-id-' + index " v-model="task.completed">
-        <input type="text" class="form-control" v-on:blur="(e) => validateEdit(e, index)" @keyup="(e) => editTask(e, index)" :value="task.description" >
-        <div>
-            <button v-on:click="removeTask(index)">delete</i></button>
-        </div>
-      </li>
-    <div>
-      <input type="text" class="form-control" ref="newTaskInput" placeholder="Add task" @keyup.enter="addTask">
-    </div>
-    <h1>Completed Tasks</h1>
-      <li class="list-group-item" v-for="(task,index) in tasks" v-show="!!task.completed" :ref="'taskListItem'+index">
-        {{task.description}}
-      </li>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script>
-    new Vue({
-      el:'#app',
-      data() {
-        return {
-          tasks: [],
-          title: 'Tasks',
-        };
-      },
-      mounted() {
-        if (localStorage.tasks) {
-          this.tasks = users = JSON.parse(localStorage.getItem("tasks") || "[]");
-        }
-      },
-      watch: {
-        tasks: {
-          deep: true,
-          handler(newTaskList) {
-            localStorage.setItem("tasks", JSON.stringify(newTaskList));
-          }
-        }
-      },
-      methods: {
-        addTask(e) {
-          const isValid = this.validateEdit(e);
-          if (isValid) {
-            this.tasks.push({ description: e.target.value, completed: false });
-            this.$refs.newTaskInput.value = '';
-          }
-        },
-        editTask(e, index) {
-          const isValid = this.validateEdit(e);
-          if (isValid) this.tasks[index].description = e.target.value;
-        },
-        removeTask(index) {
-          this.$refs[`taskListItem${index}`][0].classList.add('deleted');
-          setTimeout(() => {
-            this.tasks.splice(index, 1);
-          }, 200);
-        },
-        validateEdit(e, index) {
-          console.log('what is the event ', e);
-          if (e.target.value.trim() === '') {
-            if (e.type === 'blur') this.removeTask(index);
-            return false;
-          }
-          return true;
-        }
-      }
-    });
-  </script>
+<body>
+  <div id="app"></div>
+  <script src="./index.js"></script>
 </body>
 </html>

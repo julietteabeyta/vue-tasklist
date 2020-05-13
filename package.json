@@ -4,13 +4,17 @@
   "description": "Vue Task List",
   "main": "index.html",
   "dependencies": {
+    "autosize": "^4.0.2",
+    "css-loader": "^3.5.3",
     "node-sass": "^4.14.1",
+    "parcel-bundler": "^1.12.4",
     "sass-loader": "^8.0.2",
-    "webpack": "^4.43.0"
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html"
   },
   "repository": {
     "type": "git",
@@ -21,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/julietteabeyta/vue-tasklist/issues"
   },
-  "homepage": "https://github.com/julietteabeyta/vue-tasklist#readme"
+  "homepage": "https://github.com/julietteabeyta/vue-tasklist#readme",
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.2",
+    "vue-template-compiler": "^2.6.11"
+  }
 }
