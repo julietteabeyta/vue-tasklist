@@ -7,7 +7,7 @@ body {
   font-family: sans-serif;
 }
 
-#app {
+.wrapper {
   max-width: 35%;
 }
 
@@ -15,7 +15,6 @@ textarea {
   outline: none;
   border: none;
   width: 100%;
-  resize: none;
 }
 
 .task-add-input {

@@ -6,14 +6,13 @@ body {
   margin: 0;
   font-family: sans-serif; }
 
-#app {
+.wrapper {
   max-width: 35%; }
 
 textarea {
   outline: none;
   border: none;
-  width: 100%;
-  resize: none; }
+  width: 100%; }
 
 .task-add-input {
   border-bottom: 1px solid #808080; }

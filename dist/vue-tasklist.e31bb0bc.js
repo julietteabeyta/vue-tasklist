@@ -8852,7 +8852,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 var _default = _vue.default.extend({
-  el: '#app',
   data: function data() {
     return {
       tasks: [],
@@ -8922,6 +8921,7 @@ exports.default = _default;
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "wrapper" },
     [
       _c("h1", [_vm._v("Tasks")]),
       _vm._v(" "),
@@ -9151,7 +9151,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63202" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53031" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <h1>Tasks</h1>
       <li class="list-group-item incomplete" v-for="(task,index) in tasks" v-show="!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'incomplete'">
         <div class="check-container">
@@ -23,7 +23,6 @@
 <script>
   import Vue from 'vue';
   export default Vue.extend({
-    el: '#app',
     data() {
       return {
         tasks: [],
