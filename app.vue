@@ -9,10 +9,10 @@
             <path d="M24.0338 43.3349L45.007 65.4992C45.4155 65.9308 46.108 65.9131 46.4938 65.4612L87.7866 17.1036" stroke="#808080" stroke-width="10"/>
           </svg>            
         </div>
-        <textarea type="text" class="form-control" v-on:blur="(e) => validateEdit(e, index)" @keydown="(e) => editTask(e, index)" :value="task.description" v:model="task.description" ></textarea>
+        <div contenteditable="true" type="text" class="form-control" v-on:blur="(e) => editTask(e, index)" @keyup.enter="(e) => { e.preventDefault(); e.stopPropagation(); editTask(e, index); return false; }" v:model="task.description" >{{ task.description }}</div>
       </li>
     <div>
-      <textarea type="text" class="form-control task-add-input" ref="newTaskInput" placeholder="Add task" @keyup.enter="addTask"></textarea>
+      <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" @keyup.enter="addTask"></div>
     </div>
     <h1>Completed Tasks</h1>
     <li class="list-group-item" v-for="(task,index) in tasks" v-show="!!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'complete'">
@@ -46,24 +46,26 @@
       addTask(e) {
         const isValid = this.validateEdit(e);
         if (isValid) {
-          this.tasks.push({ description: e.target.value, completed: false });
-          this.$refs.newTaskInput.value = '';
+          this.tasks.push({ description: e.target.textContent, completed: false });
+          this.$refs.newTaskInput.innerHTML = '';
         }
       },
       editTask(e, index) {
-        const isValid = this.validateEdit(e);
-        if (isValid) this.tasks[index].description = e.target.value;
+        e.preventDefault();
+        e.target.blur();
+        const isValid = this.validateEdit(e, index);
+        if (isValid) this.tasks[index].description = e.target.textContent;
         else this.removeTask(index);
       },
       removeTask(index) {
         this.$refs[`taskListItem${index}`][0].classList.add('deleted');
-        setTimeout(() => {
-          this.tasks.splice(index, 1);
-        }, 200);
+        this.tasks.splice(index, 1);
       },
       validateEdit(e, index) {
-        if (e.target.value.trim() === '') {
-          if (e.type === 'blur') this.removeTask(index);
+        if (e.target.textContent.trim() === '') {
+          if (e.type === 'blur') {
+            this.removeTask(index);
+          }
           return false;
         }
         return true;

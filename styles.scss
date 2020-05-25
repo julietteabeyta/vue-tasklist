@@ -8,7 +8,7 @@ body {
 }
 
 .wrapper {
-  max-width: 35%;
+  width: 35%;
 }
 
 textarea {
@@ -18,7 +18,12 @@ textarea {
 }
 
 .task-add-input {
+  outline: none;
   border-bottom: 1px solid #808080;
+  &:empty:before {
+    content: attr(data-placeholder);
+    opacity: .5;
+}
 }
 
 li {
@@ -27,6 +32,11 @@ li {
   list-style: none;
   animation: slide-in .2s ease;
   margin-bottom: 10px;
+  div {
+    width: 95%;
+    max-width: 95%;
+    outline: none;
+  }
   &.incomplete {
     margin-bottom: 25px;
   }
