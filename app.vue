@@ -5,7 +5,8 @@
       <div class="task-add-input-container">
         <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" @keydown.enter="(e) => { e.preventDefault(); addTask(e); }"></div>
       </div>
-      <ul className="list-incomplete">
+      <li class="task-total">Total tasks: {{ tasks.filter(task => !task.completed).length }}</li>
+      <ul class="list-incomplete">
         <li class="list-group-item incomplete" v-for="(task,index) in tasks" v-show="!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'incomplete'">
           <div class="check-container">
             <input type="checkbox" :id="'incompleted-task-id-' + index " v-model="task.completed">
@@ -22,7 +23,7 @@
       <h1>Completed</h1>
       <ul class="list-completed">
         <li class="list-group-item" v-for="(task,index) in tasks" v-show="!!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'complete'">
-          - {{task.description}}
+          {{task.description}}
         </li>
       </ul>
     </div>
