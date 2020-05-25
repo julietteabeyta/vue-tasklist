@@ -2,10 +2,10 @@
   <div class="wrapper">
     <div class="task-container">
       <h1>To Do</h1>
-      <div>
-        <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" @keyup.enter="addTask"></div>
+      <div class="task-add-input-container">
+        <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" @keydown.enter="(e) => { e.preventDefault(); addTask(e); }"></div>
       </div>
-      <ul>
+      <ul className="list-incomplete">
         <li class="list-group-item incomplete" v-for="(task,index) in tasks" v-show="!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'incomplete'">
           <div class="check-container">
             <input type="checkbox" :id="'incompleted-task-id-' + index " v-model="task.completed">
@@ -22,7 +22,7 @@
       <h1>Completed</h1>
       <ul class="list-completed">
         <li class="list-group-item" v-for="(task,index) in tasks" v-show="!!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'complete'">
-          {{task.description}}
+          - {{task.description}}
         </li>
       </ul>
     </div>
@@ -40,7 +40,7 @@
       };
     },
     mounted() {
-      Vue.use(Toasted, { duration: 2000 });
+      Vue.use(Toasted);
       if (localStorage.tasks) {
         this.tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
       }
@@ -66,10 +66,10 @@
         if (this.tasks[index].description === e.target.textContent) return;
         if (isValid){
           this.tasks[index].description = e.target.textContent;
-          Vue.toasted.show('Task successfully edited!')
+          Vue.toasted.success('Task successfully edited!', { duration: 2000, closeOnSwipe: true, keepOnHover: true, position: 'top-center' });
         } else {
           this.removeTask(index);
-          Vue.toasted.show('Task successfully removed')
+          Vue.toasted.success('Task successfully removed', { duration: 2000, closeOnSwipe: true, keepOnHover: true, position: 'top-center' });
         }
       },
       removeTask(index) {

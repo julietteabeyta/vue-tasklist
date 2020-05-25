@@ -6,6 +6,9 @@
   font-style: normal;
 }
 
+html {
+  font-size: 16px;
+}
 
 body {
   height: 100vh;
@@ -31,6 +34,7 @@ body {
 }
 
 h1 {
+  display: flex;
   font-family: 'zoika_fontbold', sans-serif;
   font-size: 5vw;
   margin: 0;
@@ -38,7 +42,11 @@ h1 {
 
 .task-add-input {
   outline: none;
-  border-bottom: 1px solid #808080;
+  border-bottom: 1px solid #f0f0f0;
+  width: 100%;
+  max-height: 3.5rem;
+  margin-bottom: 45px;
+  overflow-y: scroll;
   &:empty:before {
     content: attr(data-placeholder);
     opacity: .5;
@@ -58,7 +66,7 @@ ul {
       bottom: 0;
       right: 0;
       width: 50%;
-      height: 50%;
+      height: 80%;
       text-align: center;
       margin: 0; padding: 30px 0;
       background-image: -webkit-gradient(
@@ -73,9 +81,7 @@ ul {
 
 li {
   display: flex;
-  font: 400 15px;
   list-style: none;
-  animation: slide-in .2s ease;
   margin-bottom: 10px;
   div {
     width: 95%;
@@ -122,18 +128,10 @@ li {
 input[type="checkbox"]:hover ~ svg {
   animation: draw-in 2s ease;
   path {
-    stroke: #4BB543;
+    stroke: #4caf50;
   }
 }
 
-@keyframes slide-in {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
 @keyframes fade-out {
   from {
     opacity: 1;
