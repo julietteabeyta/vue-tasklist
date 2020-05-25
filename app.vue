@@ -9,7 +9,7 @@
             <path d="M24.0338 43.3349L45.007 65.4992C45.4155 65.9308 46.108 65.9131 46.4938 65.4612L87.7866 17.1036" stroke="#808080" stroke-width="10"/>
           </svg>            
         </div>
-        <div contenteditable="true" type="text" class="form-control" v-on:blur="(e) => editTask(e, index)" @keyup.enter="(e) => { e.preventDefault(); e.stopPropagation(); editTask(e, index); return false; }" v:model="task.description" >{{ task.description }}</div>
+        <div contenteditable="true" type="text" class="form-control" v-on:blur="(e) => editTask(e, index)" @keydown.enter="(e) => { e.preventDefault(); e.target.blur(); }" v:model="task.description" >{{ task.description }}</div>
       </li>
     <div>
       <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" @keyup.enter="addTask"></div>
@@ -22,6 +22,8 @@
 </template>
 <script>
   import Vue from 'vue';
+  import Toasted from 'vue-toasted';
+
   export default Vue.extend({
     data() {
       return {
@@ -30,6 +32,7 @@
       };
     },
     mounted() {
+      Vue.use(Toasted, { duration: 2000 });
       if (localStorage.tasks) {
         this.tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
       }
@@ -51,15 +54,21 @@
         }
       },
       editTask(e, index) {
-        e.preventDefault();
-        e.target.blur();
         const isValid = this.validateEdit(e, index);
-        if (isValid) this.tasks[index].description = e.target.textContent;
-        else this.removeTask(index);
+        if (this.tasks[index].description === e.target.textContent) return;
+        if (isValid){
+          this.tasks[index].description = e.target.textContent;
+          Vue.toasted.show('Task successfully edited!')
+        } else {
+          this.removeTask(index);
+          Vue.toasted.show('Task successfully removed')
+        }
       },
       removeTask(index) {
         this.$refs[`taskListItem${index}`][0].classList.add('deleted');
-        this.tasks.splice(index, 1);
+        setTimeout(() => {
+          this.tasks.splice(index, 1);
+        }, 200);
       },
       validateEdit(e, index) {
         if (e.target.textContent.trim() === '') {
