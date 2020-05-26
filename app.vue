@@ -3,7 +3,7 @@
     <div class="task-container">
       <h1>To Do</h1>
       <div class="task-add-input-container">
-        <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" @keydown.enter="(e) => { e.preventDefault(); addTask(e); }"></div>
+        <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" v-on:blur="addTask" @keydown.enter="(e) => { e.preventDefault(); addTask(e); }"></div>
       </div>
       <li class="task-total">Total tasks: {{ tasks.filter(task => !task.completed).length }}</li>
       <ul class="list-incomplete">
