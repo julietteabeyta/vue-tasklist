@@ -11,7 +11,7 @@
           <div class="check-container">
             <input type="checkbox" :id="'incompleted-task-id-' + index " v-model="task.completed">
             <svg height="20" width="20" viewBox="0 0 100 100">
-              <use xlink:href="/checkcircle.svg#icon"/>
+              <use href="/checkcircle.svg#icon"/>
             </svg>
           </div>
           <div contenteditable="true" type="text" class="form-control" v-on:blur="(e) => editTask(e, index)" @keydown.enter="(e) => { e.preventDefault(); e.target.blur(); }" v:model="task.description" >{{ task.description }}</div>
