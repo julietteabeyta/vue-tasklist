@@ -141,14 +141,13 @@ li {
     height: 20px;
     width: 20px;
     z-index: 0;
+    stroke: #808080;
   }
 }
 
 input[type="checkbox"]:hover ~ svg {
   animation: draw-in 2s ease;
-  path {
-    stroke: #4caf50;
-  }
+  stroke: #4caf50;
 }
 
 @keyframes fade-out {
