@@ -64,11 +64,26 @@ ul {
     position: relative;
     li {
       position: relative;
-      margin-left: 20px;
+      margin-left: 30px;
+      cursor: pointer;
+      svg {
+        display: none;
+        position: absolute;
+        left: -32px;
+        animation: draw-in .8s ease;
+      }
+      &:hover {
+        &::before {
+          display: none;
+        }
+        svg {
+          display: block;
+        }
+      }
       &::before {
         content: '';
         position: absolute;
-        left: -20px;
+        left: -30px;
         top: 8px;
         width: 10px;
         height: 2px;
@@ -78,6 +93,7 @@ ul {
     &::after {
       content: '';
       position: fixed;
+      pointer-events: none;
       bottom: 0;
       right: 0;
       width: 100%;
@@ -100,16 +116,13 @@ ul {
 
 li {
   display: flex;
+  margin-bottom: 25px;
   list-style: none;
-  margin-bottom: 10px;
   animation: slide-in .3s ease;
   div {
     width: 95%;
     max-width: 95%;
     outline: none;
-  }
-  &.incomplete {
-    margin-bottom: 25px;
   }
   &.deleted {
     animation: fade-out .2s ease;
@@ -149,6 +162,12 @@ li {
 input[type="checkbox"]:hover ~ svg {
   animation: draw-in 2s ease;
   stroke: #4caf50;
+}
+
+p {
+  display: block;
+  font-size: 11px;
+  margin-top: -5px;
 }
 
 @keyframes slide-in {
@@ -221,5 +240,11 @@ input[type="checkbox"]:hover ~ svg {
           color-stop(1, rgba(14, 17, 17, 100)));
       }
     }
+  }
+}
+
+@media screen and (min-width: 448px) {
+  p {
+    display: none;
   }
 }

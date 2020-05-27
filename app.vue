@@ -10,7 +10,7 @@
         <li class="list-group-item incomplete" v-for="(task,index) in incompleteTasks" :ref="'taskListItem'+index" v-bind:key="task.id">
           <div class="check-container">
             <input type="checkbox" :id="'incompleted-task-id-' + index " v-on:click="() => markCompleted(task)">
-            <svg height="20" width="20" viewBox="0 0 100 100">
+            <svg height="20" width="20" viewBox="0 0 105 105">
               <use href="/checkcircle.svg#icon"/>
             </svg>
           </div>
@@ -20,8 +20,12 @@
     </div>
     <div class="task-container">
       <h1>Completed</h1>
+      <p>Tap to restore task</p>
       <ul class="list-completed">
-        <li class="list-group-item" v-for="(task,index) in completeTasks" :ref="'taskListItem'+index" v-bind:key="task.id">
+        <li class="list-group-item" v-for="(task,index) in completeTasks" :ref="'taskListItem'+index" v-bind:key="task.id" v-on:click="() => restoreTask(task)">
+          <svg height="20" width="20" viewBox="0 0 212 212">
+              <use href="/undo.svg#icon"/>
+          </svg>
           {{task.description}}
         </li>
       </ul>
@@ -84,6 +88,12 @@
         const newTask = task;
         newTask.completed = true;
         newTask.completedAt = Date.now();
+      },
+
+      restoreTask(task) {
+        const newTask = task;
+        newTask.completed = false;
+        newTask.completedAt = null;
       },
 
       editTask(e, task) {
