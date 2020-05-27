@@ -5,23 +5,23 @@
       <div class="task-add-input-container">
         <div contenteditable="true" type="text" class="form-control task-add-input" ref="newTaskInput" data-placeholder="Add task" v-on:blur="addTask" @keydown.enter="(e) => { e.preventDefault(); addTask(e); }"></div>
       </div>
-      <li class="task-total">Total tasks: {{ tasks.filter(task => !task.completed).length }}</li>
+      <li class="task-total">Total tasks: {{ incompleteTasks.length }}</li>
       <ul class="list-incomplete">
-        <li class="list-group-item incomplete" v-for="(task,index) in tasks" v-show="!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'incomplete'">
+        <li class="list-group-item incomplete" v-for="(task,index) in incompleteTasks" :ref="'taskListItem'+index" v-bind:key="task.id">
           <div class="check-container">
-            <input type="checkbox" :id="'incompleted-task-id-' + index " v-model="task.completed">
+            <input type="checkbox" :id="'incompleted-task-id-' + index " v-on:click="() => markCompleted(task)">
             <svg height="20" width="20" viewBox="0 0 100 100">
               <use href="/checkcircle.svg#icon"/>
             </svg>
           </div>
-          <div contenteditable="true" type="text" class="form-control" v-on:blur="(e) => editTask(e, index)" @keydown.enter="(e) => { e.preventDefault(); e.target.blur(); }" v:model="task.description" >{{ task.description }}</div>
+          <div contenteditable="true" type="text" class="form-control" v-on:blur="(e) => editTask(e, task)" @keydown.enter="(e) => { e.preventDefault(); e.target.blur(); }">{{ task.description }}</div>
         </li>
       </ul>
     </div>
     <div class="task-container">
       <h1>Completed</h1>
       <ul class="list-completed">
-        <li class="list-group-item" v-for="(task,index) in tasks" v-show="!!task.completed" :ref="'taskListItem'+index" v-bind:key="index + 'complete'">
+        <li class="list-group-item" v-for="(task,index) in completeTasks" :ref="'taskListItem'+index" v-bind:key="task.id">
           {{task.description}}
         </li>
       </ul>
@@ -31,6 +31,8 @@
 <script>
   import Vue from 'vue';
   import Toasted from 'vue-toasted';
+  import _ from 'lodash';
+  import { v4 as uuidv4 } from 'uuid';
 
   export default Vue.extend({
     data() {
@@ -45,48 +47,70 @@
         this.tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
       }
     },
+    computed: {
+      incompleteTasks() {
+        return this.tasks.filter(task => !task.completed);
+      },
+
+      completeTasks() {
+        return _.sortBy(this.tasks.filter(task => !!task.completed), 'completedAt').reverse();
+      }
+    },
     watch: {
       tasks: {
         deep: true,
         handler(newTaskList) {
           localStorage.setItem("tasks", JSON.stringify(newTaskList));
         }
-      }
+      },
+
+      completeTasks: {
+        handler(newTaskList) {
+          console.log('what is the new task list ', newTaskList);
+          return _.sortBy(newTaskList, 'completedAt').reverse();
+        }
+      },
     },
     methods: {
       addTask(e) {
-        const isValid = this.validateEdit(e);
+        const isValid = this.validateTask(e);
         if (isValid) {
-          this.tasks.unshift({ description: e.target.textContent, completed: false });
+          this.tasks.unshift({ id: uuidv4(), description: e.target.textContent, completed: false });
           this.$refs.newTaskInput.innerHTML = '';
         }
       },
-      editTask(e, index) {
-        const isValid = this.validateEdit(e, index);
-        if (this.tasks[index].description === e.target.textContent) return;
+
+      markCompleted(task) {
+        const newTask = task;
+        newTask.completed = true;
+        newTask.completedAt = Date.now();
+      },
+
+      editTask(e, task) {
+        const found = task;
+        if (found.description === e.target.textContent) return;
+        const isValid = this.validateTask(e);
         if (isValid){
-          this.tasks[index].description = e.target.textContent;
+          found.description = e.target.textContent;
           Vue.toasted.success('Task successfully edited!', { duration: 2000, closeOnSwipe: true, keepOnHover: true, position: 'top-center' });
         } else {
-          this.removeTask(index);
-          Vue.toasted.success('Task successfully removed', { duration: 2000, closeOnSwipe: true, keepOnHover: true, position: 'top-center' });
+          this.removeTask(task.id);
         }
       },
-      removeTask(index) {
-        this.$refs[`taskListItem${index}`][0].classList.add('deleted');
-        setTimeout(() => {
-          this.tasks.splice(index, 1);
-        }, 200);
-      },
-      validateEdit(e, index) {
+
+      validateTask(e) {
         if (e.target.textContent.trim() === '') {
-          if (e.type === 'blur') {
-            this.removeTask(index);
-          }
           return false;
         }
         return true;
-      }
+      },
+
+      removeTask(id) {
+        const found = this.tasks.findIndex((task) => task.id === id);
+
+        this.$delete(this.tasks, found);
+        Vue.toasted.success('Task successfully removed', { duration: 2000, closeOnSwipe: true, keepOnHover: true, position: 'top-center' });
+      },
     }
   });
 </script>

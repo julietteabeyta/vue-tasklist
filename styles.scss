@@ -102,6 +102,7 @@ li {
   display: flex;
   list-style: none;
   margin-bottom: 10px;
+  animation: slide-in .3s ease;
   div {
     width: 95%;
     max-width: 95%;
@@ -150,6 +151,14 @@ input[type="checkbox"]:hover ~ svg {
   stroke: #4caf50;
 }
 
+@keyframes slide-in {
+  from {
+    transform: translateX(-300px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
 @keyframes fade-out {
   from {
     opacity: 1;
